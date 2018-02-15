@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E2ADF542035C4700098BB56 /* BacketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2ADF532035C4700098BB56 /* BacketTableViewCell.swift */; };
+		4E2ADF562035C5560098BB56 /* BacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2ADF552035C5560098BB56 /* BacketViewController.swift */; };
 		4E3509BC2035692900031727 /* model_586537548780.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 4E3509B92035692900031727 /* model_586537548780.mtl */; };
 		4E3509BD2035692900031727 /* texture_586537548780.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4E3509BA2035692900031727 /* texture_586537548780.jpg */; };
 		4E3509BE2035692900031727 /* model_586537548780.obj in Resources */ = {isa = PBXBuildFile; fileRef = 4E3509BB2035692900031727 /* model_586537548780.obj */; };
@@ -34,6 +36,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4E2ADF532035C4700098BB56 /* BacketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BacketTableViewCell.swift; sourceTree = "<group>"; };
+		4E2ADF552035C5560098BB56 /* BacketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BacketViewController.swift; sourceTree = "<group>"; };
 		4E3509B92035692900031727 /* model_586537548780.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model_586537548780.mtl; sourceTree = "<group>"; };
 		4E3509BA2035692900031727 /* texture_586537548780.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = texture_586537548780.jpg; sourceTree = "<group>"; };
 		4E3509BB2035692900031727 /* model_586537548780.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model_586537548780.obj; sourceTree = "<group>"; };
@@ -125,6 +129,8 @@
 				4EFB3E19203565D000B854FF /* Info.plist */,
 				4E3509D720356BFA00031727 /* CategoryCellCollectionViewCell.swift */,
 				4E3509D920356FD600031727 /* ItemCollectionViewCell.swift */,
+				4E2ADF532035C4700098BB56 /* BacketTableViewCell.swift */,
+				4E2ADF552035C5560098BB56 /* BacketViewController.swift */,
 			);
 			path = augmentedRealityPickerFromMenu;
 			sourceTree = "<group>";
@@ -218,9 +224,11 @@
 			files = (
 				4E3509E92035A23400031727 /* ListItem.swift in Sources */,
 				4E3509D820356BFA00031727 /* CategoryCellCollectionViewCell.swift in Sources */,
+				4E2ADF542035C4700098BB56 /* BacketTableViewCell.swift in Sources */,
 				4E3509DA20356FD600031727 /* ItemCollectionViewCell.swift in Sources */,
 				4EFB3E10203565CF00B854FF /* ViewController.swift in Sources */,
 				4E3509EB2035A2EF00031727 /* CategoryItem.swift in Sources */,
+				4E2ADF562035C5560098BB56 /* BacketViewController.swift in Sources */,
 				4EFB3E0E203565CF00B854FF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

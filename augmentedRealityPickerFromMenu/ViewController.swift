@@ -29,6 +29,8 @@ class ViewController: UIViewController, UICollectionViewDelegateFlowLayout{
     var categoriesforBottomCollectionView:[CategoryItem]!
     var AtLeastOneNodeInserted:Bool = false
     var itemSelected:Bool = false
+    var selectedNode:SCNNode!
+    var basketList:[ListItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +90,18 @@ class ViewController: UIViewController, UICollectionViewDelegateFlowLayout{
             let tapLocation = recognizer.location(in: sceneView)
             let hitTestResults = sceneView.hitTest(tapLocation, types: .existingPlaneUsingExtent)
             
-            guard let hitTestResult = hitTestResults.first else { return }
+            guard let hitTestResult = hitTestResults.first else {
+                let tapLocationNode = recognizer.location(in: self.sceneView)
+                let hitTestResultNode = self.sceneView.hitTest(tapLocationNode)
+                if let node = hitTestResultNode.first?.node {
+                    self.selectedNode = node
+                    self.stackViewRotation.isHidden = false
+                    self.AtLeastOneNodeInserted = true
+                    //EnableRotation
+                    //Add image to topRight
+                }
+            return
+            }
             let translation = hitTestResult.worldTransform.translation
             let x = translation.x
             let y = translation.y
@@ -117,12 +130,10 @@ class ViewController: UIViewController, UICollectionViewDelegateFlowLayout{
                 
                 
                 boxNode.position = SCNVector3(x,(y + 0.2),z)
+                boxNode.setName(name: self.selectedItem.threeDString)
                 self.sceneView.scene.rootNode.addChildNode(boxNode)
+                self.selectedNode = boxNode
                 
-                for child in self.sceneView.scene.rootNode.childNodes{
-                    print("child \(child)")
-                    print("______________________________________________________________")
-                }
                 
                 group.leave()
                 
@@ -131,9 +142,24 @@ class ViewController: UIViewController, UICollectionViewDelegateFlowLayout{
                 self.stackViewRotation.isHidden = false
                 self.stopLoading()
                 self.AtLeastOneNodeInserted = true
+                self.selectedItem = nil
+                self.selectedTopLeftImage.image = nil
+                self.itemSelected = false
             }
+        }else{
+            let tapLocationNode = recognizer.location(in: self.sceneView)
+            let hitTestResultNode = self.sceneView.hitTest(tapLocationNode)
+            if let node = hitTestResultNode.first?.node {
+                self.selectedNode = node
+                self.stackViewRotation.isHidden = false
+                self.AtLeastOneNodeInserted = true
+                //EnableRotation
+                //Add image to topRight
+            }
+            return
         }
     }
+    
     func addTapGestureToSceneView() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.addNodeToScene(withGestureRecognizer:)))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
@@ -151,6 +177,12 @@ class ViewController: UIViewController, UICollectionViewDelegateFlowLayout{
     @IBAction func deleteBtnPressed(_ sender: Any) {
         self.deleteLast()
     }
+    
+    
+    @IBAction func basketBtnClicked(_ sender: Any) {
+        self.goToBasket()
+    }
+    
     
 }
 
@@ -351,28 +383,51 @@ extension ViewController {
     
     
     func rotateRight(){
-        if(AtLeastOneNodeInserted){
+        if(selectedNode != nil){
             let firstAnimation = SCNAction.rotateBy(x: 0, y: 30, z: 0, duration: 0)
-            self.sceneView.scene.rootNode.childNodes[self.sceneView.scene.rootNode.childNodes.count - 1].runAction(firstAnimation, completionHandler: nil)
+            self.selectedNode.runAction(firstAnimation, completionHandler: nil)
         }
         
     }
     
     func rotateLeft(){
-        if(AtLeastOneNodeInserted){
+        if(selectedNode != nil){
             let firstAnimation = SCNAction.rotateBy(x: 0, y: -30, z: 0, duration: 0)
-            self.sceneView.scene.rootNode.childNodes[self.sceneView.scene.rootNode.childNodes.count - 1].runAction(firstAnimation, completionHandler: nil)
+            self.selectedNode.runAction(firstAnimation, completionHandler: nil)
         }
     }
     
     func deleteLast(){
-        if(AtLeastOneNodeInserted){
-            self.sceneView.scene.rootNode.childNodes[self.sceneView.scene.rootNode.childNodes.count - 1].removeFromParentNode()
-        }
+        if(selectedNode != nil){
+            self.selectedNode.removeFromParentNode()
         self.AtLeastOneNodeInserted = false
         self.stackViewRotation.isHidden = true
+        }
     }
     
+    
+    func goToBasket(){
+        var sum:Int = 0
+        for node in self.sceneView.scene.rootNode.childNodes {
+            guard let nameToTest:String = node.getName() else{
+                continue
+            }
+            for category in self.categoriesforBottomCollectionView{
+                for lItem in category.categoryChildList{
+                    if(nameToTest == lItem.threeDString && nameToTest != ""){
+                        self.basketList.append(lItem)
+                        sum = sum + lItem.price
+                    }
+                }
+            }
+        }
+        print("Basket Count: \(self.basketList.count)")
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let newViewController = storyBoard.instantiateViewController(withIdentifier: "BacketViewController") as! BacketViewController
+        newViewController.listPassed = self.basketList
+        newViewController.money = sum
+        self.present(newViewController, animated: true, completion: nil)
+    }
     
 }
 
@@ -422,6 +477,23 @@ extension ViewController{
     
     
     
+    
+}
+
+
+extension SCNNode {
+    
+    func setName(name:String){
+        self.name = name
+    }
+    func getName() -> String{
+        if(self.name != nil){
+            return self.name!
+        }else{
+            return ""
+        }
+        
+    }
     
 }
 
