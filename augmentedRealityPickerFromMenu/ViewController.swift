@@ -24,14 +24,15 @@ class ViewController: UIViewController, UICollectionViewDelegateFlowLayout{
     var listCatString:[String] = ["Presents","Sweets","Kid Games", "Furniture", "Cars"]
     var listPresents:[UIImage] = [#imageLiteral(resourceName: "present"),#imageLiteral(resourceName: "gift (2)")]
     var listCandies:[UIImage] = [#imageLiteral(resourceName: "candy"),#imageLiteral(resourceName: "ice-cream"),#imageLiteral(resourceName: "candy-cane"),#imageLiteral(resourceName: "doughnut"),#imageLiteral(resourceName: "cupcake"),#imageLiteral(resourceName: "ice-cream-1"),#imageLiteral(resourceName: "cupcake (1)")]
-    var selectedItem:UIImage!
-    var selectedList:[UIImage] = []
-    
+    var selectedItem:ListItem!
+    var selectedList:[ListItem] = []
+    var categoriesforBottomCollectionView:[CategoryItem]!
     var AtLeastOneNodeInserted:Bool = false
     var itemSelected:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.categoriesforBottomCollectionView = self.initializeIndexes()
         self.categoryCollectionView.delegate = self
         self.itemsCollectionView.delegate = self
         self.addTapGestureToSceneView()
@@ -93,7 +94,10 @@ class ViewController: UIViewController, UICollectionViewDelegateFlowLayout{
             let y = translation.y
             let z = translation.z
             
-            var name:String = self.getSelectedPresentOBJString()
+            var name:String = self.selectedItem.threeDString
+            if(name == ""){
+                return
+            }
             self.startLoading()
             let group = DispatchGroup()
             group.enter()
@@ -246,7 +250,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if(collectionView == self.categoryCollectionView){
-            return listCategories.count
+            return self.categoriesforBottomCollectionView.count
         }
         
         if(collectionView == self.itemsCollectionView){
@@ -261,8 +265,10 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         if(collectionView == self.categoryCollectionView){
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCellCollectionViewCell", for: indexPath as IndexPath) as! CategoryCellCollectionViewCell
             // Use the outlet in our custom class to get a reference to the UILabel in the cell
-            cell.image.image = self.listCategories[indexPath.row]
-            cell.descriptionLabel.text = self.listCatString[indexPath.row]
+            cell.image.image = self.categoriesforBottomCollectionView[indexPath.row].categoryImage
+            //cell.image.image = self.listCategories[indexPath.row]
+            //cell.descriptionLabel.text = self.listCatString[indexPath.row]
+            cell.descriptionLabel.text = self.categoriesforBottomCollectionView[indexPath.row].categoryTitle
             //cell.backgroundColor = UIColor.cyan // make cell more visible in our example project
             
             return cell
@@ -271,7 +277,9 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         if(collectionView == self.itemsCollectionView){
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath as IndexPath) as! ItemCollectionViewCell
             // Use the outlet in our custom class to get a reference to the UILabel in the cell
-            cell.image.image = self.selectedList[indexPath.row]
+            cell.image.image = self.selectedList[indexPath.row].image
+            cell.title.text = self.selectedList[indexPath.row].title
+            cell.price.text = "\(self.selectedList[indexPath.row].price!) €"
             //cell.backgroundColor = UIColor.cyan // make cell more visible in our example project
             
             return cell
@@ -280,7 +288,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCellCollectionViewCell", for: indexPath as IndexPath) as! CategoryCellCollectionViewCell
         // Use the outlet in our custom class to get a reference to the UILabel in the cell
-        cell.image.image = self.selectedList[indexPath.row]
+        cell.image.image = self.selectedList[indexPath.row].image
         //cell.backgroundColor = UIColor.cyan // make cell more visible in our example project
         
         return cell
@@ -289,21 +297,27 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if(indexPath.row > 1){
-            return
-        }
+        
         if(collectionView == self.itemsCollectionView){
+            if(indexPath.row > (self.selectedList.count - 1)){
+                return
+            }
             self.selectedItem = self.selectedList[indexPath.row]
-            self.selectedTopLeftImage.image = self.selectedItem
+            self.selectedTopLeftImage.image = self.selectedItem.image
             self.itemSelected = true
         }
         
         if(collectionView == self.categoryCollectionView){
-            if(indexPath.row == 0){
-                self.selectedList = listPresents
-            }else{
-                self.selectedList = listCandies
+//            if(indexPath.row == 0){
+//                self.selectedList = listPresents
+//            }else{
+//                self.selectedList = listCandies
+//            }
+            if(indexPath.row > (self.categoriesforBottomCollectionView.count - 1)){
+                return
             }
+            
+            self.selectedList = self.categoriesforBottomCollectionView[indexPath.row].categoryChildList
             self.itemsCollectionView.reloadData()
         }
     }
@@ -315,25 +329,25 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 
 
 extension ViewController {
-    func getSelectedPresentOBJString() -> String {
-        if(self.selectedItem != nil){
-            switch self.selectedItem {
-            case self.listCandies[0]:
-                return "model_586537548780.obj"
-            case self.listCandies[1]:
-                return "model_450388061306.obj"
-            case self.listPresents[0]:
-                return "model_034636223427.obj"
-            case self.listPresents[1]:
-                return "model_274419518493.obj"
-            default:
-                return ""
-            }
-        }
-        return ""
-        
-        
-    }
+//    func getSelectedPresentOBJString() -> String {
+//        if(self.selectedItem != nil){
+//            switch self.selectedItem {
+//            case self.listCandies[0]:
+//                return "model_586537548780.obj"
+//            case self.listCandies[1]:
+//                return "model_450388061306.obj"
+//            case self.listPresents[0]:
+//                return "model_034636223427.obj"
+//            case self.listPresents[1]:
+//                return "model_274419518493.obj"
+//            default:
+//                return ""
+//            }
+//        }
+//        return ""
+//
+//
+//    }
     
     
     func rotateRight(){
@@ -358,6 +372,55 @@ extension ViewController {
         self.AtLeastOneNodeInserted = false
         self.stackViewRotation.isHidden = true
     }
+    
+    
+}
+
+
+extension ViewController{
+    
+    /*This extension is to add items to view collection
+    First you create the items that are ListItem objects
+     and then you create a list of them which will be passed
+     to the initializer of the CategoryItem object
+     In the end you will have a list of CategoryItem objects
+     whitch it will be the list for the bottom Collection View
+     and every categoryChildList of every Category Item
+     is a list for the side Collection view
+     
+     ! In the future update this will be loaded from server
+     */
+    func initializeIndexes() -> [CategoryItem]{
+        let listCategories:[UIImage] = [#imageLiteral(resourceName: "Christmas-gifts"),#imageLiteral(resourceName: "candy-crush-png-10"),#imageLiteral(resourceName: "kids"),#imageLiteral(resourceName: "Princess_Throne"),#imageLiteral(resourceName: "toy_car")]
+        let listCatString:[String] = ["Presents","Sweets","Kid Games", "Furniture", "Cars"]
+        let listPresents:[UIImage] = [#imageLiteral(resourceName: "present"),#imageLiteral(resourceName: "gift (2)")]
+        let listCandies:[UIImage] = [#imageLiteral(resourceName: "candy"),#imageLiteral(resourceName: "ice-cream"),#imageLiteral(resourceName: "candy-cane"),#imageLiteral(resourceName: "doughnut"),#imageLiteral(resourceName: "cupcake"),#imageLiteral(resourceName: "ice-cream-1"),#imageLiteral(resourceName: "cupcake (1)")]
+        let ListItemOne:ListItem = ListItem(name: "red present", image: #imageLiteral(resourceName: "present"), price: 10, ThreeDString: "model_034636223427.obj")
+        let ListItemTwo:ListItem = ListItem(name: "greenPresent", image: #imageLiteral(resourceName: "gift (2)"), price: 5, ThreeDString: "model_274419518493.obj")
+        let ListItemThree:ListItem = ListItem(name: "candy", image: #imageLiteral(resourceName: "candy"), price: 1, ThreeDString: "model_586537548780.obj")
+        let ListItemFour:ListItem = ListItem(name: "ice cream", image: #imageLiteral(resourceName: "ice-cream"), price: 5, ThreeDString: "model_450388061306.obj")
+        let ListItemFive:ListItem = ListItem(name: "candy cane", image: #imageLiteral(resourceName: "candy-cane"), price: 1, ThreeDString: "")
+        let ListItemSix:ListItem = ListItem(name: "dounaght", image: #imageLiteral(resourceName: "doughnut"), price: 2, ThreeDString: "")
+        let ListItemSeven:ListItem = ListItem(name: "cupcake", image: #imageLiteral(resourceName: "cupcake"), price: 4, ThreeDString: "")
+        let ListItemEight:ListItem = ListItem(name: "ice cream", image: #imageLiteral(resourceName: "ice-cream-1"), price: 3, ThreeDString: "")
+        let ListItemNine:ListItem = ListItem(name: "tart", image: #imageLiteral(resourceName: "cupcake (1)"), price: 1, ThreeDString: "")
+        
+        
+        
+        let categoryItemOne:CategoryItem = CategoryItem(categoryName: "Presents", CategoryImage: #imageLiteral(resourceName: "Christmas-gifts"), List: [ListItemOne,ListItemTwo])
+        let categoryItemTwo:CategoryItem = CategoryItem(categoryName: "Sweets", CategoryImage: #imageLiteral(resourceName: "candy-crush-png-10"), List: [ListItemThree,ListItemFour, ListItemFive, ListItemSix, ListItemSeven, ListItemEight, ListItemNine])
+        let categoryItemThree:CategoryItem = CategoryItem(categoryName: "Kid Games", CategoryImage: #imageLiteral(resourceName: "kids"), List: [])
+        let categoryItemFour:CategoryItem = CategoryItem(categoryName: "Furniture", CategoryImage: #imageLiteral(resourceName: "Princess_Throne"), List: [])
+        let categoryItemFive:CategoryItem = CategoryItem(categoryName: "Cars", CategoryImage: #imageLiteral(resourceName: "car") , List: [])
+        
+        let TotalList:[CategoryItem] = [categoryItemOne,categoryItemTwo,categoryItemThree,categoryItemFour,categoryItemFive]
+        
+        return TotalList
+        
+    }
+    
+    
+    
     
     
 }

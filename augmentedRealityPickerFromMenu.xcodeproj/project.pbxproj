@@ -24,6 +24,8 @@
 		4E3509D62035693C00031727 /* model_274419518493.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 4E3509CA2035693C00031727 /* model_274419518493.mtl */; };
 		4E3509D820356BFA00031727 /* CategoryCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3509D720356BFA00031727 /* CategoryCellCollectionViewCell.swift */; };
 		4E3509DA20356FD600031727 /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3509D920356FD600031727 /* ItemCollectionViewCell.swift */; };
+		4E3509E92035A23400031727 /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3509E82035A23400031727 /* ListItem.swift */; };
+		4E3509EB2035A2EF00031727 /* CategoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3509EA2035A2EF00031727 /* CategoryItem.swift */; };
 		4EFB3E0E203565CF00B854FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFB3E0D203565CF00B854FF /* AppDelegate.swift */; };
 		4EFB3E10203565CF00B854FF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFB3E0F203565CF00B854FF /* ViewController.swift */; };
 		4EFB3E13203565D000B854FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EFB3E11203565CF00B854FF /* Main.storyboard */; };
@@ -49,6 +51,8 @@
 		4E3509CA2035693C00031727 /* model_274419518493.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model_274419518493.mtl; sourceTree = "<group>"; };
 		4E3509D720356BFA00031727 /* CategoryCellCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCellCollectionViewCell.swift; sourceTree = "<group>"; };
 		4E3509D920356FD600031727 /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E3509E82035A23400031727 /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
+		4E3509EA2035A2EF00031727 /* CategoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryItem.swift; sourceTree = "<group>"; };
 		4EFB3E0A203565CF00B854FF /* augmentedRealityPickerFromMenu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = augmentedRealityPickerFromMenu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EFB3E0D203565CF00B854FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4EFB3E0F203565CF00B854FF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +73,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E3509E72035A21700031727 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4E3509E82035A23400031727 /* ListItem.swift */,
+				4E3509EA2035A2EF00031727 /* CategoryItem.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		4EFB3E01203565CF00B854FF = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +116,7 @@
 		4EFB3E0C203565CF00B854FF /* augmentedRealityPickerFromMenu */ = {
 			isa = PBXGroup;
 			children = (
+				4E3509E72035A21700031727 /* Model */,
 				4EFB3E0D203565CF00B854FF /* AppDelegate.swift */,
 				4EFB3E0F203565CF00B854FF /* ViewController.swift */,
 				4EFB3E11203565CF00B854FF /* Main.storyboard */,
@@ -202,9 +216,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E3509E92035A23400031727 /* ListItem.swift in Sources */,
 				4E3509D820356BFA00031727 /* CategoryCellCollectionViewCell.swift in Sources */,
 				4E3509DA20356FD600031727 /* ItemCollectionViewCell.swift in Sources */,
 				4EFB3E10203565CF00B854FF /* ViewController.swift in Sources */,
+				4E3509EB2035A2EF00031727 /* CategoryItem.swift in Sources */,
 				4EFB3E0E203565CF00B854FF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
