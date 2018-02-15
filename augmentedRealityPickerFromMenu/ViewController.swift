@@ -79,7 +79,7 @@ class ViewController: UIViewController, UICollectionViewDelegateFlowLayout{
 //        //return CGSize(width: self.categoryCollectionView.bounds.height, height: self.categoryCollectionView.bounds.height)
 //    }
     
-    
+    //asd
     
     
     @objc func addNodeToScene(withGestureRecognizer recognizer: UIGestureRecognizer) {
